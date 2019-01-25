@@ -273,9 +273,10 @@ int main()
 			glUniformMatrix4fv(glGetUniformLocation(myshader->Program, "projMat"), 1, GL_FALSE, glm::value_ptr(projMat));
 			glUniformMatrix4fv(glGetUniformLocation(myshader->Program, "modelMat"), 1, GL_FALSE, glm::value_ptr(modelMat));
 			glUniform3f(glGetUniformLocation(myshader->Program, "objcolor"), 1.0f, 0.5f, 0.31f);// 我们所熟悉的珊瑚红
-			glUniform3f(glGetUniformLocation(myshader->Program, "ambientcolor"), 1.0f, 1.0f, 1.0f); //环境光白色
+			glUniform3f(glGetUniformLocation(myshader->Program, "ambientcolor"), 0.5f, 0.2f,0.0f); //环境光白色
 			glUniform3f(glGetUniformLocation(myshader->Program, "lightpos"), 10.0f, 10.0f, 5.0f); //灯光位置
-			glUniform3f(glGetUniformLocation(myshader->Program, "lightcolor"), 1, 1, 1); //灯光颜色
+			glUniform3f(glGetUniformLocation(myshader->Program, "lightcolor"), 0.5f, 0.5f, 0.3f); //灯光颜色
+			glUniform3f(glGetUniformLocation(myshader->Program, "camerapos"), camera.Position.x, camera.Position.y, camera.Position.z);
 
 			// 设置要画的模型
 			glBindVertexArray(VAO);

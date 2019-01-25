@@ -13,15 +13,21 @@ uniform vec3 lightcolor;
 uniform vec3 objcolor;
 // 环境颜色
 uniform vec3 ambientcolor;
+uniform vec3 camerapos;
 void main()
 {
 	// diffuse计算
-	vec3 norm = normalize(Normal);
 	vec3 lightDir  = normalize(lightpos - Fragpos);
-	float diff = dot(lightDir, norm);
-	vec3 diffuse = diff * lightcolor;
+	vec3 diffuse = max(dot(lightDir, Normal),0) * lightcolor;
 
-	color = vec4(diffuse,1.0);
-	//color = vec4(objcolor*ambientcolor ,1.0)*texture(ourTexture, TexCoord)*texture(ourTexture2, TexCoord);
-   // color = texture(ourTexture, TexCoord)*texture(ourTexture2, TexCoord);
+	// Specular
+	vec3 reflectvec = reflect(-lightDir, Normal);
+	vec3 cameravec = normalize(camerapos - Fragpos);
+	float specularamount = pow(dot (reflectvec, cameravec),32);
+	vec3 specular = specularamount *lightcolor;
+
+
+	vec3 comband = (diffuse +ambientcolor + specular)*objcolor;
+	color = vec4(comband ,1.0);
+	
 }
