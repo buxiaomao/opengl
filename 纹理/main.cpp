@@ -140,14 +140,16 @@ int main()
 
 	// 矩阵产生
 	glm::mat4 trans = glm::mat4(1.0f);
-	trans = glm::translate(trans, glm::vec3(-1.0f, 1, 0));
-
+	//平移
+	//trans = glm::translate(trans, glm::vec3(-0.001f, 0.001f, 0));
+	// 旋转
+	trans = glm::rotate(trans, glm::radians(45.0f), glm::vec3(0, 0, 1.0f));
 	
 	glfwSetKeyCallback(window, key_callback);
 	// 窗口消息接收
 	while (!glfwWindowShouldClose(window))
 	{
-
+		
 		glfwPollEvents();
 		glClearColor(0, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT);
