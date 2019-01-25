@@ -139,7 +139,8 @@ int main()
 
 
 	// ¾ØÕó²úÉú
-
+	glm::mat4 trans = glm::mat4(1.0f);
+	trans = glm::translate(trans, glm::vec3(-1.0f, 1, 0));
 
 	
 	glfwSetKeyCallback(window, key_callback);
