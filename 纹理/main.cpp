@@ -182,8 +182,9 @@ int main()
 	//trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0, 0, 1.0f));
 	//// Ëõ·Å
 	////trans = glm::scale(trans, glm::vec3(2, 2, 0));
-	Camera camera(glm::vec3(0,0,3),glm::vec3(0,0,0),glm::vec3(0,1,0));
 
+	//Camera camera(glm::vec3(0,0,3),glm::vec3(0,0,0),glm::vec3(0,1,0));
+	Camera camera(glm::vec3(0, 0, 3), glm::radians(-15.0f), glm::radians(180.0f), glm::vec3(0, 1, 0));
 	// Ä£ÐÍ¾ØÕó
 	glm::mat4 modelMat = glm::mat4(1.0f);
 	modelMat = glm::rotate(modelMat, glm::radians(90.0f), glm::vec3(0, 0, 1));
