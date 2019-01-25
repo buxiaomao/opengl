@@ -37,9 +37,14 @@ glm::mat4 Camera::GetViewMartix()
 
 void Camera::ProcessMouseMovement(GLfloat xoffset, GLfloat yoffset)
 {
-	Pitch += yoffset *0.01f;
-	Yaw += xoffset*0.01f;
+	Pitch += yoffset * sensey;
+	Yaw += xoffset* sensex;
 	updateCameraVectors();
+}
+
+void Camera::updatecamerapos()
+{
+	Positon += Forward * speedz;
 }
 
 void Camera::updateCameraVectors()

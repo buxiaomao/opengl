@@ -23,6 +23,19 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	// 关闭应用程序
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
+	if (key == GLFW_KEY_W && action == GLFW_PRESS)
+	{
+		camera.speedz = -0.01f;
+	}
+	else if (key == GLFW_KEY_S && action == GLFW_PRESS)
+	{
+		camera.speedz = 0.01f;
+	}
+	else
+	{
+		camera.speedz = 0.0f;
+	}
+	
 }
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
@@ -269,6 +282,7 @@ int main()
 // 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 
+		camera.updatecamerapos();
 		glfwSwapBuffers(window);
 	}
 	glfwTerminate();
