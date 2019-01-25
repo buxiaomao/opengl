@@ -7,6 +7,7 @@
 #include<glm/glm.hpp>
 #include<glm/gtc/matrix_transform.hpp>
 #include<glm/gtc/type_ptr.hpp>
+#include"Camera.h"
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
@@ -181,14 +182,16 @@ int main()
 	//trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0, 0, 1.0f));
 	//// 缩放
 	////trans = glm::scale(trans, glm::vec3(2, 2, 0));
+	Camera camera(glm::vec3(0,0,3),glm::vec3(0,0,0),glm::vec3(0,1,0));
 
 	// 模型矩阵
 	glm::mat4 modelMat = glm::mat4(1.0f);
-	modelMat = glm::rotate(modelMat, glm::radians(-55.0f), glm::vec3(1, 0, 0));
+	modelMat = glm::rotate(modelMat, glm::radians(90.0f), glm::vec3(0, 0, 1));
 	
 	// 视图矩阵
 	glm::mat4 viewmat = glm::mat4(1.0f);
-	viewmat = glm::translate(viewmat, glm::vec3(0, 0, -3.0f));
+	//viewmat = glm::translate(viewmat, glm::vec3(0, 0, -3.0f));
+	viewmat = camera.GetViewMartix();
 
 	// 投影矩阵
 	glm::mat4 projMat;

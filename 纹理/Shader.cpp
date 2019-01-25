@@ -8,6 +8,7 @@ Shader::Shader(const GLchar* vertexPath, const GLchar* fragmentPath)
 	std::string vertexCode;
 	std::string fragmentCode;
 
+
 	std::ifstream vShaderFile;
 	std::ifstream fShaderFile;
 	// 保证ifstream对象可以抛出异常：
