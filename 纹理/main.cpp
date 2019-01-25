@@ -70,29 +70,27 @@ glm::vec3(-1.3f,  1.0f, -1.5f)
 #pragma endregion
 
 // camera declare
-Camera camera(glm::vec3(0, 0, 3), glm::radians(-15.0f), glm::radians(180.0f), glm::vec3(0, 1, 0));
+Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
 #pragma region input declare
+bool keys[1024];
 float lastx;
 float lasty;
+GLfloat deltaTime = 0.0f;
+GLfloat lastFrame = 0.0f;
+
 bool firstmouse = true;
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
-	// 当用户按下ESC键,我们设置window窗口的WindowShouldClose属性为true
-	// 关闭应用程序
+	//cout << key << endl;
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
-	if (key == GLFW_KEY_W && action == GLFW_PRESS)
+	if (key >= 0 && key < 1024)
 	{
-		camera.speedz = -0.01f;
-	}
-	else if (key == GLFW_KEY_S && action == GLFW_PRESS)
-	{
-		camera.speedz = 0.01f;
-	}
-	else
-	{
-		camera.speedz = 0.0f;
+		if (action == GLFW_PRESS)
+			keys[key] = true;
+		else if (action == GLFW_RELEASE)
+			keys[key] = false;
 	}
 
 }
@@ -111,7 +109,22 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	lastx = xpos;
 	lasty = ypos;
 	camera.ProcessMouseMovement(deltax, deltay);
-	cout << deltax << endl;
+}
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	camera.ProcessMouseScroll(yoffset);
+}
+void Do_Movement()
+{
+	// Camera controls
+	if (keys[GLFW_KEY_W])
+		camera.ProcessKeyboard(FORWARD, deltaTime);
+	if (keys[GLFW_KEY_S])
+		camera.ProcessKeyboard(BACKWARD, deltaTime);
+	if (keys[GLFW_KEY_A])
+		camera.ProcessKeyboard(LEFT, deltaTime);
+	if (keys[GLFW_KEY_D])
+		camera.ProcessKeyboard(RIGHT, deltaTime);
 }
 #pragma endregion
 
@@ -163,7 +176,7 @@ int main()
 
 	glfwSetKeyCallback(window, key_callback);
 	glfwSetCursorPosCallback(window, mouse_callback);
-
+	glfwSetScrollCallback(window, scroll_callback);
 
 	// init glew 初始化glew
 	glewExperimental = true;
@@ -224,19 +237,21 @@ int main()
 	glm::mat4 projMat;
 	projMat = glm::perspective(45.0f, 800.0f / 600.0f, 0.1f, 100.0f);
 #pragma endregion
-
 	
-
-
 	// 窗口消息接收
 	while (!glfwWindowShouldClose(window))
 	{
+
+		GLfloat currentFrame = glfwGetTime();
+		deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
 		glfwPollEvents();
+		Do_Movement();
 		glClearColor(0, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
 		// 设置视图矩阵
-		viewmat = camera.GetViewMartix();
+		viewmat = camera.GetViewMatrix();
 	
 		for (GLuint i = 0; i < 10; i++)
 		{
@@ -267,7 +282,7 @@ int main()
 		}
 		
 		glfwSwapBuffers(window);
-		camera.updatecamerapos();
+		
 	}
 	glfwTerminate();
 	return 0;
