@@ -24,12 +24,33 @@ Camera::Camera(glm::vec3 _position, float pitch, float yaw, glm::vec3 worldup)
 	right = glm::normalize(glm::cross(Forward, worldup));
 	up = glm::normalize(glm::cross(Forward, right));
 
+	this->Yaw = yaw;
+	this->Pitch = pitch;
+
 }
 glm::mat4 Camera::GetViewMartix()
 {
 	glm::mat4 view;
 	view = glm::lookAt(Positon, Positon + Forward, Worldup);
 	return view;
+}
+
+void Camera::ProcessMouseMovement(GLfloat xoffset, GLfloat yoffset)
+{
+	Pitch += yoffset *0.01f;
+	Yaw += xoffset*0.01f;
+	updateCameraVectors();
+}
+
+void Camera::updateCameraVectors()
+{
+	Forward.x = glm::cos(Pitch)*glm::sin(Yaw);
+	Forward.y = glm::sin(Pitch);
+	Forward.z = glm::cos(Pitch)* glm::cos(Yaw);
+	right = glm::normalize(glm::cross(Forward, Worldup));
+	up = glm::normalize(glm::cross(Forward, right));
+		
+	
 }
 
 Camera::~Camera()

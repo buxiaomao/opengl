@@ -9,6 +9,14 @@
 #include<glm/gtc/type_ptr.hpp>
 #include"Camera.h"
 
+float lastx;
+float lasty;
+bool firstmouse = true;
+
+
+//Camera camera(glm::vec3(0,0,3),glm::vec3(0,0,0),glm::vec3(0,1,0));
+Camera camera(glm::vec3(0, 0, 3), glm::radians(-15.0f), glm::radians(180.0f), glm::vec3(0, 1, 0));
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
 	// 当用户按下ESC键,我们设置window窗口的WindowShouldClose属性为true
@@ -16,8 +24,23 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
 }
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+	if (firstmouse == true)
+	{
+		lastx = xpos;
+		lasty = ypos;
+		firstmouse = false;
+	}
+	float deltax, deltay;
+	deltax = xpos - lastx;
+	deltay = ypos - lasty;
 
-
+	lastx = xpos;
+	lasty = ypos;
+	camera.ProcessMouseMovement(deltax, deltay);
+	cout << deltax << endl;
+}
 
 int main()
 {
@@ -37,6 +60,10 @@ int main()
 		return -1;
 	}
 	glfwMakeContextCurrent(window);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+	glfwSetKeyCallback(window, key_callback);
+	glfwSetCursorPosCallback(window, mouse_callback);
 
 
 	// init glew 初始化glew
@@ -49,6 +76,8 @@ int main()
 	}
 	glViewport(0, 0, 800, 600);
 	glEnable(GL_DEPTH_TEST);
+
+
 
 	Shader * myshader = new Shader("shader.vs", "shader.frag");
 
@@ -183,8 +212,6 @@ int main()
 	//// 缩放
 	////trans = glm::scale(trans, glm::vec3(2, 2, 0));
 
-	//Camera camera(glm::vec3(0,0,3),glm::vec3(0,0,0),glm::vec3(0,1,0));
-	Camera camera(glm::vec3(0, 0, 3), glm::radians(-15.0f), glm::radians(180.0f), glm::vec3(0, 1, 0));
 	// 模型矩阵
 	glm::mat4 modelMat = glm::mat4(1.0f);
 	modelMat = glm::rotate(modelMat, glm::radians(90.0f), glm::vec3(0, 0, 1));
@@ -192,13 +219,13 @@ int main()
 	// 视图矩阵
 	glm::mat4 viewmat = glm::mat4(1.0f);
 	//viewmat = glm::translate(viewmat, glm::vec3(0, 0, -3.0f));
-	viewmat = camera.GetViewMartix();
+	
 
 	// 投影矩阵
 	glm::mat4 projMat;
 	projMat = glm::perspective(45.0f, 800.0f / 600.0f, 0.1f, 100.0f);
 
-	glfwSetKeyCallback(window, key_callback);
+
 	// 窗口消息接收
 	while (!glfwWindowShouldClose(window))
 	{
@@ -208,7 +235,7 @@ int main()
 		glClearColor(0, 0, 0, 1);
 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
-
+		viewmat = camera.GetViewMartix();
 		// 渲染时绑定位置
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, textureA);
@@ -224,6 +251,7 @@ int main()
 		glUniformMatrix4fv(glGetUniformLocation(myshader->Program, "projMat"), 1, GL_FALSE, glm::value_ptr(projMat));
 		glBindVertexArray(VAO);
 
+	
 		for (GLuint i = 0; i < 10; i++)
 		{
 			glm::mat4 model2 = glm::mat4(1.0f);
