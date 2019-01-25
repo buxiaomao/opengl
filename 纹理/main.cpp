@@ -4,6 +4,10 @@
 #include"Shader.h"  
 #define STB_IMAGE_IMPLEMENTATION
 #include"stb_image.h"
+#include<glm/glm.hpp>
+#include<glm/gtc/matrix_transform.hpp>
+#include<glm/gtc/type_ptr.hpp>
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
 	// 当用户按下ESC键,我们设置window窗口的WindowShouldClose属性为true
@@ -16,6 +20,11 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 int main()
 {
+	//glm::vec4 vec(1, 0, 0, 1);
+	//glm::mat4 trans= glm::mat4(1.0f);
+	//trans = glm::translate(trans, glm::vec3(2.0f,1, 0)); 
+	//vec = trans * vec;
+	//cout << vec.x << endl << vec.y << endl << vec.z << endl;
 
 
 	glfwInit();
@@ -126,9 +135,10 @@ int main()
 		cout << "load image error";
 	}
 	stbi_image_free(image2);
-
-
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+
+	// 矩阵产生
 
 
 	
@@ -148,9 +158,13 @@ int main()
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, textureB);
 		myshader->Use();
-	
+		
+		
+		
+
 		glUniform1i(glGetUniformLocation(myshader->Program, "ourTexture2"), 1);
 		glUniform1i(glGetUniformLocation(myshader->Program, "ourTexture1"), 0);
+		glUniformMatrix4fv(glGetUniformLocation(myshader->Program, "transform"), 1, GL_FALSE, glm::value_ptr(trans));
 		glBindVertexArray(VAO);
 		glPointSize(5);
 		// 画顶点
