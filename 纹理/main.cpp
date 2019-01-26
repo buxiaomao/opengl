@@ -197,9 +197,8 @@ int main()
 	Material * mymaterial = new Material(myshader, 
 		LoadImagetoGPU("container2.png", GL_RGBA, GL_RGBA),
 		glm::vec3(1,1,1),
-		glm::vec3(1,1,1),
-		32.0f
-		
+		LoadImagetoGPU("container2_specular.png", GL_RGBA, GL_RGBA),
+		32.0f	
 		);
 
 
@@ -275,6 +274,8 @@ int main()
 
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, mymaterial->diffuse);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, mymaterial->specular);
 
 			// ÉèÖÃ²ÄÖÊshader
 			myshader->Use();
@@ -292,7 +293,7 @@ int main()
 
 			mymaterial->shader->SetUniform3f("material.ambient", mymaterial->ambient);
 			mymaterial->shader->SetUniform1i("material.diffuse",0);
-			mymaterial->shader->SetUniform3f("material.specular", mymaterial->specular);
+			mymaterial->shader->SetUniform1i("material.specular", 1);
 			mymaterial->shader->SetUniform1f("material.shinness", mymaterial->shinness);
 
 

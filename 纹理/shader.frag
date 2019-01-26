@@ -6,7 +6,7 @@ in vec2 TexCoord;
 struct Material{
 	vec3 ambient;
 	sampler2D diffuse;
-	vec3 specular;
+	sampler2D specular;
 	float shinness;
 };
 
@@ -34,14 +34,14 @@ void main()
 	
 
 
-	//Specular
-	vec3 specular =material.specular* specularamount *lightcolor;
+	//Specular 镜面反射贴图+ 物体本身镜面反射。
+	vec3 specular = texture(material.specular, TexCoord).rgb* specularamount *lightcolor;
 	
-	// diffuse 
+	// diffuse 漫反射贴图+物体本身漫反射。
 	vec3 diffuse = texture(material.diffuse, TexCoord).rgb+ max(dot(lightDir, Normal),0) * lightcolor;
 	//vec3 diffuse= texture(material.diffuse, TexCoord).rgb;
-	// ambient
-	vec3 ambient = texture(material.diffuse, TexCoord).rgb * ambientcolor;
+	// ambient 环境光照。。
+	vec3 ambient =  ambientcolor;
 
 	vec3 comband = (ambient + diffuse + specular)*objcolor;
 	color = vec4(comband ,1.0);
