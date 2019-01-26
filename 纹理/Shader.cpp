@@ -100,3 +100,14 @@ void Shader::Use()
 {
 	glUseProgram(Program);
 }
+
+void Shader::SetUniform3f(const char * paramNamestring, glm::vec3 param)
+{
+	glUniform3f(glGetUniformLocation(Program, paramNamestring), param.x, param.y, param.z);
+}
+
+void Shader::SetUniform1f(const char * paramNamestring, float param)
+{
+	glUniform1f(glGetUniformLocation(Program, paramNamestring), param);
+
+}

@@ -8,7 +8,7 @@
 #include<glm/gtc/matrix_transform.hpp>
 #include<glm/gtc/type_ptr.hpp>
 #include"Camera.h"
-
+#include"Material.h"
 #pragma region model data
 
 GLfloat vertices[] = {
@@ -191,6 +191,13 @@ int main()
 #pragma endregion
 	// init shader program
 	Shader * myshader = new Shader("shader.vs", "shader.frag");
+	Material * mymaterial = new Material(myshader, 
+		glm::vec3(1,1,1),
+		glm::vec3(1,1,1),
+		glm::vec3(1,1,1),
+		32.0f
+		);
+
 
 #pragma region init adn load models to vao vbo
 	unsigned int VAO;
@@ -254,6 +261,7 @@ int main()
 		for (GLuint i = 0; i < 10; i++)
 		{
 			// 设置模型矩阵
+			
 			modelMat = glm::translate(glm::mat4(1.0f), cubePositions[i]);
 			
 			// 设置视图和投影矩阵 如果你想
@@ -278,11 +286,10 @@ int main()
 			glUniform3f(glGetUniformLocation(myshader->Program, "lightcolor"), 1, 1, 1); //灯光颜色
 			glUniform3f(glGetUniformLocation(myshader->Program, "camerapos"), camera.Position.x, camera.Position.y, camera.Position.z);
 
-
-			glUniform3f(glGetUniformLocation(myshader->Program, "material.ambient"), 1, 1, 1);
-			glUniform3f(glGetUniformLocation(myshader->Program, "material.diffuse."),1, 1, 1);
-			glUniform3f(glGetUniformLocation(myshader->Program, "material.specular"), 1, 1, 1);
-			glUniform1f(glGetUniformLocation(myshader->Program, "material.shinness"), 32.0f);
+			mymaterial->shader->SetUniform3f("material.ambient", mymaterial->ambient);
+			mymaterial->shader->SetUniform3f("material.diffuse", mymaterial->diffuse);
+			mymaterial->shader->SetUniform3f("material.specular", mymaterial->specular);
+			mymaterial->shader->SetUniform1f("material.shinness", mymaterial->shinness);
 
 
 			// 设置要画的模型
