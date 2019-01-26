@@ -14,6 +14,11 @@ struct lightpoint{
 	float liner;
 	float quadratic;
 };
+
+struct lightspot{
+	float  cosphy;
+};
+uniform lightspot lights;
 uniform lightpoint lightp;
 uniform Material material;
 //uniform sampler2D ourTexture;
@@ -24,7 +29,7 @@ uniform vec3 lightcolor;
 uniform vec3 objcolor;
 uniform vec3 ambientcolor;
 uniform vec3 camerapos;
-uniform  vec3 lightDir;
+uniform  vec3 lightDirUniform;
 
 out vec4 color;
 void main()
@@ -48,6 +53,15 @@ void main()
    vec3  dd= diffuse * attenuation + specular *attenuation;
 
 	vec3 comband = (ambient + dd )*objcolor;
-	color = vec4(comband ,1.0);
+	vec3 fl = normalize( Fragpos - lightpos );
+	float costheta = dot(fl, lightDirUniform);
+	if(costheta < lights.cosphy )
+	{
+		color = vec4((ambient + (diffuse + specular)*objcolor) ,1.0);
+	}else
+	{
+		color = vec4( ambient*objcolor,1.0);
+	}
+
 	
 }

@@ -11,6 +11,7 @@
 #include"Material.h"
 #include"LightDirectional.h"
 #include"LightPoint.h"
+#include"Lightspot.h"
 #pragma region model data
 
 GLfloat vertices[] = {
@@ -76,8 +77,8 @@ glm::vec3(-1.3f,  1.0f, -1.5f)
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
 
-LightPoint light(glm::vec3(1, 1, -1), glm::vec3(glm::radians(45.0f), glm::radians(45.0f), 0)
-	,glm::vec3(1,1,1));
+Lightspot light(glm::vec3(0, 2.0, 0.0), glm::vec3(glm::radians(90.0f), 0, 0)
+	,glm::vec3(1,0,0));
 
 #pragma region input declare
 bool keys[1024];
@@ -295,12 +296,16 @@ int main()
 			glUniform3f(glGetUniformLocation(myshader->Program, "ambientcolor"), 0.1, 0.1,0.1); //环境光白色
 			glUniform3f(glGetUniformLocation(myshader->Program, "lightpos"), light.positon.x,light.positon.y,light.positon.z); //灯光位置
 			glUniform3f(glGetUniformLocation(myshader->Program, "lightcolor"), light.color.x,light.color.y,light.color.z); //灯光颜色
-			glUniform3f(glGetUniformLocation(myshader->Program, "lightDir"), light.direction.x, light.direction.y, light.direction.z);
+			glUniform3f(glGetUniformLocation(myshader->Program, "lightDirUniform"), light.direction.x, light.direction.y, light.direction.z);
+			cout << light.direction.x << " "<<light.direction.y <<" "<<light.direction.z<< endl;
 
-			glUniform1f(glGetUniformLocation(myshader->Program, "lightp.constant"), light.constant);
+
+			glUniform1f(glGetUniformLocation(myshader->Program, "lights.cosphy"), light.cosphy);
+		
+		/*	glUniform1f(glGetUniformLocation(myshader->Program, "lightp.constant"), light.constant);
 			glUniform1f(glGetUniformLocation(myshader->Program, "lightp.liner"), light.liner);
 			glUniform1f(glGetUniformLocation(myshader->Program, "lightp.quadratic"), light.quadratic);
-			cout << light.constant << endl;
+			*/
 
 
 
