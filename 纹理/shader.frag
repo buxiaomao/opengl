@@ -1,9 +1,16 @@
 #version 330 core
-out vec4 color;
 
 in vec3 Fragpos;
 in vec3 Normal;
 
+struct Material{
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+	float shinness;
+};
+
+uniform Material material;
 //uniform sampler2D ourTexture;
 //uniform sampler2D ourTexture2;
 
@@ -11,23 +18,31 @@ uniform vec3 lightpos;
 uniform vec3 lightcolor;
 // 物体颜色
 uniform vec3 objcolor;
-// 环境颜色
+
+
 uniform vec3 ambientcolor;
 uniform vec3 camerapos;
+
+out vec4 color;
 void main()
 {
-	// diffuse计算
+	
 	vec3 lightDir  = normalize(lightpos - Fragpos);
-	vec3 diffuse = max(dot(lightDir, Normal),0) * lightcolor;
-
-	// Specular
 	vec3 reflectvec = reflect(-lightDir, Normal);
 	vec3 cameravec = normalize(camerapos - Fragpos);
-	float specularamount = pow(dot (reflectvec, cameravec),32);
-	vec3 specular = specularamount *lightcolor;
+	float specularamount = pow(dot (reflectvec, cameravec),material.shinness);
+	
 
 
-	vec3 comband = (diffuse +ambientcolor + specular)*objcolor;
+	//Specular
+	vec3 specular =material.specular* specularamount *lightcolor;
+	
+	// diffuse 
+	vec3 diffuse = material.diffuse *  max(dot(lightDir, Normal),0) * lightcolor;
+	// ambient
+	vec3 ambient =material.ambient * ambientcolor;
+
+	vec3 comband = (ambient + diffuse + specular)*objcolor;
 	color = vec4(comband ,1.0);
 	
 }

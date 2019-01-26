@@ -278,6 +278,13 @@ int main()
 			glUniform3f(glGetUniformLocation(myshader->Program, "lightcolor"), 1, 1, 1); //灯光颜色
 			glUniform3f(glGetUniformLocation(myshader->Program, "camerapos"), camera.Position.x, camera.Position.y, camera.Position.z);
 
+
+			glUniform3f(glGetUniformLocation(myshader->Program, "material.ambient"), 1, 1, 1);
+			glUniform3f(glGetUniformLocation(myshader->Program, "material.diffuse."),1, 1, 1);
+			glUniform3f(glGetUniformLocation(myshader->Program, "material.specular"), 1, 1, 1);
+			glUniform1f(glGetUniformLocation(myshader->Program, "material.shinness"), 32.0f);
+
+
 			// 设置要画的模型
 			glBindVertexArray(VAO);
 			glDrawArrays(GL_TRIANGLES, 0, 36);
