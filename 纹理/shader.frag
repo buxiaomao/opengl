@@ -9,7 +9,12 @@ struct Material{
 	sampler2D specular;
 	float shinness;
 };
-
+struct lightpoint{
+	float constant;
+	float liner;
+	float quadratic;
+};
+uniform lightpoint lightp;
 uniform Material material;
 //uniform sampler2D ourTexture;
 //uniform sampler2D ourTexture2;
@@ -24,14 +29,14 @@ uniform  vec3 lightDir;
 out vec4 color;
 void main()
 {
-	
-//	vec3 lightDir  = normalize(lightpos - Fragpos);
+	float dist = length(lightpos - Fragpos);
+	float attenuation = 1.0f /(lightp.constant +lightp.liner *dist + lightp.quadratic*(dist*dist) );
+  	
+	vec3 lightDir  = normalize(lightpos - Fragpos);
 	vec3 reflectvec = reflect(-lightDir, Normal);
 	vec3 cameravec = normalize(camerapos - Fragpos);
+
 	float specularamount = pow(dot (reflectvec, cameravec),material.shinness);
-	
-
-
 	//Specular 镜面反射贴图+ 物体本身镜面反射。
 	vec3 specular = texture(material.specular, TexCoord).rgb* specularamount *lightcolor;
 	
@@ -39,9 +44,10 @@ void main()
 	vec3 diffuse = texture(material.diffuse, TexCoord).rgb+ max(dot(lightDir, Normal),0) * lightcolor;
 	//vec3 diffuse= texture(material.diffuse, TexCoord).rgb;
 	// ambient 环境光照。。
-	vec3 ambient =  ambientcolor;
+	vec3 ambient =  texture(material.diffuse, TexCoord).rgb + ambientcolor;
+   vec3  dd= diffuse * attenuation + specular *attenuation;
 
-	vec3 comband = (ambient + diffuse + specular)*objcolor;
+	vec3 comband = (ambient + dd )*objcolor;
 	color = vec4(comband ,1.0);
 	
 }

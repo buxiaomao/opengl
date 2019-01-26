@@ -132,12 +132,14 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="LightDirectional.h" />
+    <ClInclude Include="LightPoint.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LightDirectional.cpp" />
+    <ClCompile Include="LightPoint.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Shader.cpp" />
