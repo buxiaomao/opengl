@@ -15,6 +15,12 @@ public:
 	// Constructor generates the shader on the fly
 	Shader(const GLchar* vertexPath, const GLchar* fragmentPath);
 
+	enum Slot
+	{
+		DIFFUSE,
+		SPECULAR
+	};
+
 	// Uses the current shader
 	void Use();
 	void SetUniform3f(const char * paramNamestring ,glm::vec3 param);
