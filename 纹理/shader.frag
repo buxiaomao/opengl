@@ -2,10 +2,10 @@
 
 in vec3 Fragpos;
 in vec3 Normal;
-
+in vec2 TexCoord; 
 struct Material{
 	vec3 ambient;
-	vec3 diffuse;
+	sampler2D diffuse;
 	vec3 specular;
 	float shinness;
 };
@@ -38,9 +38,10 @@ void main()
 	vec3 specular =material.specular* specularamount *lightcolor;
 	
 	// diffuse 
-	vec3 diffuse = material.diffuse *  max(dot(lightDir, Normal),0) * lightcolor;
+	vec3 diffuse = texture(material.diffuse, TexCoord).rgb+ max(dot(lightDir, Normal),0) * lightcolor;
+	//vec3 diffuse= texture(material.diffuse, TexCoord).rgb;
 	// ambient
-	vec3 ambient =material.ambient * ambientcolor;
+	vec3 ambient = texture(material.diffuse, TexCoord).rgb * ambientcolor;
 
 	vec3 comband = (ambient + diffuse + specular)*objcolor;
 	color = vec4(comband ,1.0);

@@ -19,4 +19,6 @@ public:
 	void Use();
 	void SetUniform3f(const char * paramNamestring ,glm::vec3 param);
 	void SetUniform1f(const char * paramNamestring, float param);
+	void SetUniform1i(const char * paramNamestring, int sloat);
+	
 };

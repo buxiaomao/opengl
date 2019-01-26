@@ -111,3 +111,8 @@ void Shader::SetUniform1f(const char * paramNamestring, float param)
 	glUniform1f(glGetUniformLocation(Program, paramNamestring), param);
 
 }
+
+void Shader::SetUniform1i(const char * paramNamestring, int sloat)
+{
+	glUniform1i(glGetUniformLocation(Program, paramNamestring), sloat);
+}
