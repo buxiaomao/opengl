@@ -8,7 +8,7 @@
 class LightDirectional
 {
 public:
-	LightDirectional();
+	LightDirectional(glm::vec3 _position, glm::vec3 _angle, glm::vec3 _color= glm::vec3(1,1,1));
 	~LightDirectional();
 
 	glm::vec3 positon;

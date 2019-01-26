@@ -11,6 +11,7 @@ uniform mat4 modelMat;
 uniform mat4 viewmat;
 uniform mat4 projMat;
 
+
 void main()
 {
     gl_Position =  projMat *viewmat*modelMat*vec4(position, 1.0f);

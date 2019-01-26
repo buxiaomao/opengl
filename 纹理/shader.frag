@@ -16,18 +16,16 @@ uniform Material material;
 
 uniform vec3 lightpos;
 uniform vec3 lightcolor;
-// ÎïÌåÑÕÉ«
 uniform vec3 objcolor;
-
-
 uniform vec3 ambientcolor;
 uniform vec3 camerapos;
+uniform  vec3 lightDir;
 
 out vec4 color;
 void main()
 {
 	
-	vec3 lightDir  = normalize(lightpos - Fragpos);
+//	vec3 lightDir  = normalize(lightpos - Fragpos);
 	vec3 reflectvec = reflect(-lightDir, Normal);
 	vec3 cameravec = normalize(camerapos - Fragpos);
 	float specularamount = pow(dot (reflectvec, cameravec),material.shinness);

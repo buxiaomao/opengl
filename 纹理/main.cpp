@@ -9,6 +9,7 @@
 #include<glm/gtc/type_ptr.hpp>
 #include"Camera.h"
 #include"Material.h"
+#include"LightDirectional.h"
 #pragma region model data
 
 GLfloat vertices[] = {
@@ -72,6 +73,9 @@ glm::vec3(-1.3f,  1.0f, -1.5f)
 
 // camera declare
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+
+LightDirectional light(glm::vec3(10.0f, 10.0f, -5.0f), glm::vec3(glm::radians(45.0f), glm::radians(45.0f), 0)
+	,glm::vec3(1,1,1));
 
 #pragma region input declare
 bool keys[1024];
@@ -285,10 +289,12 @@ int main()
 			glUniformMatrix4fv(glGetUniformLocation(myshader->Program, "viewmat"), 1, GL_FALSE, glm::value_ptr(viewmat));
 			glUniformMatrix4fv(glGetUniformLocation(myshader->Program, "projMat"), 1, GL_FALSE, glm::value_ptr(projMat));
 			glUniformMatrix4fv(glGetUniformLocation(myshader->Program, "modelMat"), 1, GL_FALSE, glm::value_ptr(modelMat));
-			glUniform3f(glGetUniformLocation(myshader->Program, "objcolor"), 0.5, 0.5, 0.5);// 我们所熟悉的珊瑚红
+			glUniform3f(glGetUniformLocation(myshader->Program, "objcolor"), 1, 1, 1);// 我们所熟悉的珊瑚红
 			glUniform3f(glGetUniformLocation(myshader->Program, "ambientcolor"), 0.1, 0.1,0.1); //环境光白色
-			glUniform3f(glGetUniformLocation(myshader->Program, "lightpos"), 10.0f, 10.0f, -5.0f); //灯光位置
-			glUniform3f(glGetUniformLocation(myshader->Program, "lightcolor"), 0.7, 0.7, 0.7); //灯光颜色
+			//glUniform3f(glGetUniformLocation(myshader->Program, "lightpos"), light.positon.x,light.positon.y,light.positon.z); //灯光位置
+			glUniform3f(glGetUniformLocation(myshader->Program, "lightcolor"), light.color.x,light.color.y,light.color.z); //灯光颜色
+			glUniform3f(glGetUniformLocation(myshader->Program, "lightDir"), light.direction.x, light.direction.y, light.direction.z);
+
 			glUniform3f(glGetUniformLocation(myshader->Program, "camerapos"), camera.Position.x, camera.Position.y, camera.Position.z);
 
 			mymaterial->shader->SetUniform3f("material.ambient", mymaterial->ambient);
